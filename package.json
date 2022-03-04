@@ -10,6 +10,7 @@
     "ethereumjs-tx": "^2.1.2",
     "ethers": "^5.5.4",
     "hardhat": "^2.8.4",
+    "solidity-coverage": "^0.7.20",
     "web3": "^1.7.0"
   },
   "dependencies": {
