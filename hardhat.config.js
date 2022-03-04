@@ -9,6 +9,7 @@ require("./tasks/Donations.totalDonations.task");
 require("./tasks/Donations.donationOf.task");
 require("./tasks/Donations.donations.task");
 require("./tasks/Donations.donate.task");
+require("./tasks/Donations.withdraw.task");
 
 const INFURA_URL = process.env.INFURA_URL || "";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "";

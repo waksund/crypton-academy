@@ -1,19 +1,15 @@
-﻿require("@nomiclabs/hardhat-web3");
-const {task} = require("hardhat/config");
-const abi = require("../build/Donations.abi.json");
+﻿const {task} = require("hardhat/config");
 
 task("donations/donationOf", "get address donations")
     .addParam("contract", "contract address")
     .addParam("donator", "donator's address")
     .setAction(async (taskArgs) => {
-        const web3 = new Web3(process.env.INFURA_URL);
-        const contractAddress = web3.utils.toChecksumAddress(taskArgs.contract);
-        const donatorAddress = web3.utils.toChecksumAddress(taskArgs.donator);
-        const contract = new web3.eth.Contract(abi, contractAddress);
+            const factory = await ethers.getContractFactory("Donations");
+            const contract = await factory.attach(taskArgs.contract);
+            const donatorAddress = taskArgs.donator;
 
-        const donation = await contract.methods.donationOf(donatorAddress).call();
-
-        console.log(`donation of ${donatorAddress}: ${donation}`);
+            const donation = await contract.donationOf(donatorAddress);
+            console.log(`donation of ${donatorAddress}: ${donation}`);
     });
 
 module.exports = {};
