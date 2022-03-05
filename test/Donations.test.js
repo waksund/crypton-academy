@@ -1,6 +1,5 @@
 ﻿const { expect } = require('chai');
-const {BigNumber} = require("ethers");
-const {string} = require("hardhat/internal/core/params/argumentTypes");
+const constants = require("./helpers/constants");
 
 describe("Donations contract", () => {
    let donationsFactory, donationsContract, owner, addr1, addr2;
@@ -85,6 +84,14 @@ describe("Donations contract", () => {
         });
     });
 
+    describe("Donate", () => {
+        it('Should not be possible donate zero value', async () =>{
+            const donateAmount = 0;
+            await expect(donationsContract.connect(addr1).donate({value:donateAmount}))
+                .to.be.revertedWith('zero donate');
+        });
+    });
+    
     describe("Withdraw", () => {
         it('Should be possible only owner', async () =>{
             const withdrawAmount = 1;
@@ -101,6 +108,12 @@ describe("Donations contract", () => {
                 .to.be.revertedWith('insufficient funds');
         });
         
+        it('Should not be possible withdraw to zero address', async () =>{
+            const withdrawAmount = 1;
+            await expect(donationsContract.connect(owner).withdraw(constants.ZERO_ADDRESS, withdrawAmount))
+                .to.be.revertedWith('withdraw to the zero address');
+        });
+
         it('Should reduce totalDonations by a withdraw value', async () =>{
             const donateAmount = 2;
             const withdrawAmount = 1;
@@ -111,4 +124,5 @@ describe("Donations contract", () => {
         });
     });
    
+    
 });
